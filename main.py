@@ -1,7 +1,6 @@
 import pygame
 pygame.init()
 
-
 pygame.display.set_caption("Epic Noob Battle")
 screen = pygame.display.set_mode((1280, 600))
 
