@@ -1,6 +1,7 @@
 from personnage import personnage
 from Menu import *
 import pygame
+
 #Const
 TITLE = "Epic Noob Battle"
 PATH_BACKGROUND = 'assets/background.gif'
@@ -24,10 +25,18 @@ for name in PERSONNAGES:
   menu.loadPersonnage(personnage(name))
 
 
+def menuIntro():
+  logo = pygame.image.load('assets/logoV1.png')
+  logo = pygame.transform.scale(logo, (800, 550))
+  screen.blit(logo, (200,200))
+
+
 running = True
 
 while running:
   menu.show(screen, SCREENSIZE)
+
+  menuIntro()
 
   pygame.display.flip()
 
