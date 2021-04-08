@@ -36,8 +36,13 @@ class Menu:
     screen.blit(self.background, (0, 0))
     #Menu Intro
     if self.state == Menu.INTRO:
-      pass
-      #met ton code ici
+      logo = pygame.image.load('assets/logoV1.png')
+      logo = pygame.transform.scale(logo, (800, 550))
+      btnStart = pygame.image.load('assets/icons/BtnSelec.svg')
+      logo = pygame.transform.scale(logo, (800, 550))
+      screen.blit(logo, (200, 10))
+      screen.blit(btnStart, (375, 525))
+      pygame.display.flip()
     #Menu selection perso
     elif self.state == Menu.SELECT:
       screen.blit(self.lArrow, (screenSize[0]*self.arrowsLeft[0][0], screenSize[1]*self.arrowsLeft[0][1]))
@@ -90,10 +95,6 @@ class Menu:
         if self.playerIndex2 > size:
           self.playerIndex2 = 0
 
-
-
-      
-
-
-
+      if self.state == Menu.INTRO:
+        pass
 

@@ -6,7 +6,7 @@ import pygame
 TITLE = "Epic Noob Battle"
 PATH_BACKGROUND = 'assets/background.gif'
 PATH_R_ARROW = 'assets/right-arrow.png'
-SCREENSIZE = (1280, 600)
+SCREENSIZE = (1280, 630)
 PERSONNAGES = ["bleu", 'blond', "brun", "noir", "rouge", "violet"]
 
 #init pygame
@@ -25,18 +25,17 @@ for name in PERSONNAGES:
   menu.loadPersonnage(personnage(name))
 
 
-def menuIntro():
+""" def menuIntro():
   logo = pygame.image.load('assets/logoV1.png')
   logo = pygame.transform.scale(logo, (800, 550))
-  screen.blit(logo, (200,200))
-
+  screen.blit(background, (0, 0))
+  screen.blit(logo, (200,10))
+  pygame.display.flip() """
 
 running = True
 
 while running:
   menu.show(screen, SCREENSIZE)
-
-  menuIntro()
 
   pygame.display.flip()
 
