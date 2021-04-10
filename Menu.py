@@ -50,12 +50,16 @@ class Menu:
     if self.state == Menu.INTRO:
       screen.blit(self.logo, (screenSize[0]/2 - 250, 5))
       screen.blit(self.loadMenuText('JOUER'), (screenSize[0]/2 - 75, 350))
+      screen.blit(self.loadMenuText('REGLES'), (screenSize[0]/2 - 90, 410))
+      screen.blit(self.loadMenuText('OPTIONS'), (screenSize[0]/2 - 105, 470))
+      screen.blit(self.loadMenuText('QUITTER'), (screenSize[0]/2 - 100, 530))
     #Menu selection perso
     elif self.state == Menu.SELECT:
       screen.blit(self.lArrow, (screenSize[0]*self.arrowsLeft[0][0], screenSize[1]*self.arrowsLeft[0][1]))
       screen.blit(self.rArrow, (screenSize[0]*self.arrowsLeft[1][0], screenSize[1]*self.arrowsLeft[1][1]))
       screen.blit(self.lArrow, (screenSize[0]*self.arrowsRight[0][0], screenSize[1]*self.arrowsRight[0][1]))
       screen.blit(self.rArrow, (screenSize[0]*self.arrowsRight[1][0], screenSize[1]*self.arrowsRight[1][1]))
+      screen.blit(self.loadMenuText('CHOISISSEZ VOTRE PERSONNAGE :'), (screenSize[0]/2 - 300, 25))
       if self.players != set():
         ps = list(self.players)
         screen.blit(ps[self.playerIndex1].image, ((screenSize[0]*3/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/6))
@@ -105,4 +109,3 @@ class Menu:
           self.playerIndex2 = size
         if self.playerIndex2 > size:
           self.playerIndex2 = 0
-
