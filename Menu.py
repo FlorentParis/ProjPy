@@ -36,17 +36,20 @@ class Menu:
 
   def loadMenuIntro(self, pathLogo, pathBtnStart):
     self.logo = pygame.image.load(pathLogo)
-    self.logo = pygame.transform.scale(self.logo, (800, 550))
-    self.btnStart = pygame.image.load(pathBtnStart)
-    self.btnStart = pygame.transform.scale(self.btnStart, (450, 81))
+    self.logo = pygame.transform.scale(self.logo, (500, 350))
+
+  def loadMenuText(self, text):
+    font = pygame.font.SysFont(None, 64)
+    img = font.render(text, True, "WHITE")
+    return img
 
   def show(self, screen, screenSize):
     #Affichage du background
     screen.blit(self.background, (0, 0))
     #Menu Intro
     if self.state == Menu.INTRO:
-      screen.blit(self.logo, (200, 10))
-      screen.blit(self.btnStart, (375, 525))
+      screen.blit(self.logo, (screenSize[0]/2 - 250, 5))
+      screen.blit(self.loadMenuText('JOUER'), (screenSize[0]/2 - 75, 350))
     #Menu selection perso
     elif self.state == Menu.SELECT:
       screen.blit(self.lArrow, (screenSize[0]*self.arrowsLeft[0][0], screenSize[1]*self.arrowsLeft[0][1]))
