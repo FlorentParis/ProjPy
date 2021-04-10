@@ -13,7 +13,10 @@ class Menu:
     self.background = None
     self.lArrow = None
     self.rArrow = None
+    self.logo = None
+    self.btnStart = None
     #ratio positionnement fléches
+    self.btnStartSize = (450, 81)
     self.arrowsLeft = ((1/12, 1/2), (5/12, 1/2))
     self.arrowsRight = ((7/12, 1/2), (11/12, 1/2))
     self.arrowSize = (100, 100)
@@ -28,21 +31,22 @@ class Menu:
 
   def loadArrow(self, pathArrowR):
     self.rArrow = pygame.image.load(pathArrowR)
-    self.rArrow = pygame.transform.scale(self.rArrow, (100, 100))
+    self.rArrow = pygame.transform.scale(self.rArrow, self.arrowSize)
     self.lArrow = pygame.transform.flip(self.rArrow, True, False)
+
+  def loadMenuIntro(self, pathLogo, pathBtnStart):
+    self.logo = pygame.image.load(pathLogo)
+    self.logo = pygame.transform.scale(self.logo, (800, 550))
+    self.btnStart = pygame.image.load(pathBtnStart)
+    self.btnStart = pygame.transform.scale(self.btnStart, (450, 81))
 
   def show(self, screen, screenSize):
     #Affichage du background
     screen.blit(self.background, (0, 0))
     #Menu Intro
     if self.state == Menu.INTRO:
-      logo = pygame.image.load('assets/logoV1.png')
-      logo = pygame.transform.scale(logo, (800, 550))
-      btnStart = pygame.image.load('assets/icons/BtnSelec.svg')
-      logo = pygame.transform.scale(logo, (800, 550))
-      screen.blit(logo, (200, 10))
-      screen.blit(btnStart, (375, 525))
-      pygame.display.flip()
+      screen.blit(self.logo, (200, 10))
+      screen.blit(self.btnStart, (375, 525))
     #Menu selection perso
     elif self.state == Menu.SELECT:
       screen.blit(self.lArrow, (screenSize[0]*self.arrowsLeft[0][0], screenSize[1]*self.arrowsLeft[0][1]))
@@ -58,31 +62,35 @@ class Menu:
     self.players.add(player)
 
   @staticmethod
-  def isOnArrow(mx, my, arrowSize, ax, ay):
+  def isOnBtn(mx, my, arrowSize, ax, ay):
     '''
       Retourne vrai si mx, my est dans le rectangle de la fléche
-    :param mx: mouse
-    :param my:
-    :param arrowSize: taille
-    :param ax: arrows
-    :param ay:
     '''
     return mx < ax+arrowSize[0] and mx > ax and my < ay+arrowSize[1] and my > ay
 
   def onEvent(self, event, screenSize):
     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
       (mouseX, mouseY) = event.pos
-      if self.state == Menu.SELECT:
+      if self.state == Menu.INTRO:
+        #bouton jouer
+        if self.isOnBtn(mouseX, mouseY, self.btnStartSize, 375, 525 ):
+          self.state = Menu.SELECT
+      elif self.state == Menu.SELECT:
         #fléche gauche 1
-        if self.isOnArrow(mouseX, mouseY, self.arrowSize, screenSize[0]*self.arrowsLeft[0][0], screenSize[1]*self.arrowsLeft[0][1]):
+        if self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsLeft[0][0],
+                        screenSize[1] * self.arrowsLeft[0][1]):
           self.playerIndex1-=1
           #fléche gauche2
-        elif self.isOnArrow(mouseX, mouseY, self.arrowSize, screenSize[0]*self.arrowsLeft[1][0], screenSize[1]*self.arrowsLeft[1][1]):
+        elif self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsLeft[1][0],
+                          screenSize[1] * self.arrowsLeft[1][1]):
           self.playerIndex1+=1
           #fleche droite 1
-        elif self.isOnArrow(mouseX, mouseY, self.arrowSize, screenSize[0]*self.arrowsRight[0][0], screenSize[1]*self.arrowsRight[0][1]):
+        elif self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsRight[0][0],
+                          screenSize[1] * self.arrowsRight[0][1]):
           self.playerIndex2-=1
-        elif self.isOnArrow(mouseX, mouseY, self.arrowSize,screenSize[0]*self.arrowsRight[1][0], screenSize[1]*self.arrowsRight[1][1]):
+          #fleche droite 2
+        elif self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsRight[1][0],
+                          screenSize[1] * self.arrowsRight[1][1]):
           self.playerIndex2+=1
 
         size = len(self.players)-1
@@ -94,7 +102,4 @@ class Menu:
           self.playerIndex2 = size
         if self.playerIndex2 > size:
           self.playerIndex2 = 0
-
-      if self.state == Menu.INTRO:
-        pass
 
