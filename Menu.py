@@ -117,6 +117,8 @@ class Menu:
         elif self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsRight[1][0],
                           screenSize[1] * self.arrowsRight[1][1]):
           self.playerIndex2+=1
+        elif self.isOnBtn(mouseX, mouseY, [175, 64], screenSize[0]/2 - 150, 575):
+          self.state = Menu.INGAME
 
         size = len(self.players)-1
         if self.playerIndex1 < 0:
