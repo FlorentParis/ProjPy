@@ -69,18 +69,18 @@ class Menu:
     self.players.add(player)
 
   @staticmethod
-  def isOnBtn(mx, my, arrowSize, ax, ay):
+  def isOnBtn(mx, my, btnSize, bx, by):
     '''
       Retourne vrai si mx, my est dans le rectangle de la fléche
     '''
-    return mx < ax+arrowSize[0] and mx > ax and my < ay+arrowSize[1] and my > ay
+    return mx < bx + btnSize[0] and mx > bx and my < by + btnSize[1] and my > by
 
   def onEvent(self, event, screenSize):
     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
       (mouseX, mouseY) = event.pos
       if self.state == Menu.INTRO:
         #bouton jouer
-        if self.isOnBtn(mouseX, mouseY, self.btnStartSize, 375, 525 ):
+        if self.isOnBtn(mouseX, mouseY, [75, 64], screenSize[0]/2 - 60, 350):
           self.state = Menu.SELECT
       elif self.state == Menu.SELECT:
         #fléche gauche 1
