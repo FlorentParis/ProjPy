@@ -59,7 +59,8 @@ class Menu:
       screen.blit(self.rArrow, (screenSize[0]*self.arrowsLeft[1][0], screenSize[1]*self.arrowsLeft[1][1]))
       screen.blit(self.lArrow, (screenSize[0]*self.arrowsRight[0][0], screenSize[1]*self.arrowsRight[0][1]))
       screen.blit(self.rArrow, (screenSize[0]*self.arrowsRight[1][0], screenSize[1]*self.arrowsRight[1][1]))
-      screen.blit(self.loadMenuText('CHOISISSEZ VOTRE PERSONNAGE :'), (screenSize[0]/2 - 300, 25))
+      screen.blit(self.loadMenuText('CHOISISSEZ VOTRE PERSONNAGE :'), (screenSize[0]/2 - 400, 25))
+      screen.blit(self.loadMenuText('CONFIRMER'), (screenSize[0]/2 - 150, 575))
       if self.players != set():
         ps = list(self.players)
         screen.blit(ps[self.playerIndex1].image, ((screenSize[0]*3/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/6))
