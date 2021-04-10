@@ -7,7 +7,9 @@ class Menu:
   '''
   INTRO = 0
   SELECT = 1
-  INGAME = 2
+  REGLES = 2
+  OPTION = 3
+  INGAME = 4
 
   def __init__(self):
     self.background = None
@@ -64,6 +66,11 @@ class Menu:
         ps = list(self.players)
         screen.blit(ps[self.playerIndex1].image, ((screenSize[0]*3/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/6))
         screen.blit(ps[self.playerIndex2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
+    #elif self.state == Menu.REGLES:
+      #afficher régles du jeu
+    #elif self.state == Menu.OPTION:
+      #afficher les options
+
 
   def loadPersonnage(self, player):
     self.players.add(player)
@@ -80,8 +87,18 @@ class Menu:
       (mouseX, mouseY) = event.pos
       if self.state == Menu.INTRO:
         #bouton jouer
-        if self.isOnBtn(mouseX, mouseY, [75, 64], screenSize[0]/2 - 60, 350):
+        if self.isOnBtn(mouseX, mouseY, [175, 64], screenSize[0]/2 - 75, 350):
           self.state = Menu.SELECT
+        #bouton regles
+        elif self.isOnBtn(mouseX, mouseY, [200, 64], screenSize[0]/2 - 90, 410):
+          self.state = Menu.REGLES
+        #bouton options
+        elif self.isOnBtn(mouseX, mouseY, [200, 64], screenSize[0]/2 - 105, 470):
+          self.state = Menu.OPTION
+        #bouton quitter
+        elif self.isOnBtn(mouseX, mouseY, [200, 64], screenSize[0]/2 - 100, 530):
+          pygame.quit()
+          print("Fermeture du jeu")
       elif self.state == Menu.SELECT:
         #fléche gauche 1
         if self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsLeft[0][0],
