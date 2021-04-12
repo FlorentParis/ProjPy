@@ -40,6 +40,10 @@ class Menu:
     self.logo = pygame.image.load(pathLogo)
     self.logo = pygame.transform.scale(self.logo, (500, 350))
 
+  def loadRules(self, pathArrow):
+    self.arrow = pygame.image.load(pathArrow)
+    self.arrow = pygame.transform.scale(self.arrow, (60, 50))
+
   def loadMenuText(self, text):
     font = pygame.font.SysFont(None, 64)
     img = font.render(text, True, "WHITE")
@@ -67,8 +71,9 @@ class Menu:
         ps = list(self.players)
         screen.blit(ps[self.playerIndex1].image, ((screenSize[0]*3/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/6))
         screen.blit(ps[self.playerIndex2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
-    #elif self.state == Menu.REGLES:
-      #afficher régles du jeu
+    elif self.state == Menu.REGLES:
+      screen.blit(self.arrow, (10, 10))
+      screen.blit(self.loadMenuText('REGLES'), (screenSize[0]/2 - 100, 20))
     #elif self.state == Menu.OPTION:
       #afficher les options
 

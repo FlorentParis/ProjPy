@@ -6,6 +6,7 @@ import pygame
 TITLE = "Epic Noob Battle"
 PATH_BACKGROUND = 'assets/background.gif'
 PATH_R_ARROW = 'assets/right-arrow.png'
+PATH_ARROW = 'assets/icons/Arrow.svg'
 PATH_LOGO = 'assets/logoV1.png'
 PATH_BTNSTART = 'assets/icons/BtnSelec.svg'
 SCREENSIZE = (1280, 630)
@@ -21,6 +22,7 @@ screen = pygame.display.set_mode(SCREENSIZE)
 #init Menu
 menu = Menu()
 menu.loadMenuIntro(PATH_LOGO, PATH_BTNSTART)
+menu.loadRules(PATH_ARROW)
 background = menu.loadBackground(PATH_BACKGROUND)
 menu.loadArrow(PATH_R_ARROW)
 
@@ -28,14 +30,6 @@ menu.loadArrow(PATH_R_ARROW)
 #Ajout des personnages
 for name in PERSONNAGES:
   menu.loadPersonnage(personnage(name))
-
-
-""" def menuIntro():
-  logo = pygame.image.load('assets/logoV1.png')
-  logo = pygame.transform.scale(logo, (800, 550))
-  screen.blit(background, (0, 0))
-  screen.blit(logo, (200,10))
-  pygame.display.flip() """
 
 running = True
 
