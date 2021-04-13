@@ -47,8 +47,8 @@ class Menu:
     self.arrow = pygame.image.load(pathArrow)
     self.arrow = pygame.transform.scale(self.arrow, (60, 50))
 
-  def loadMenuText(self, text):
-    font = pygame.font.SysFont(None, 64)
+  def loadMenuText(self, size, text):
+    font = pygame.font.SysFont(None, size)
     img = font.render(text, True, "WHITE")
     return img
 
@@ -58,25 +58,35 @@ class Menu:
     #Menu Intro
     if self.state == Menu.INTRO:
       screen.blit(self.logo, (screenSize[0]/2 - 250, 5))
-      screen.blit(self.loadMenuText('JOUER'), (screenSize[0]/2 - 75, 350))
-      screen.blit(self.loadMenuText('REGLES'), (screenSize[0]/2 - 90, 410))
-      screen.blit(self.loadMenuText('OPTIONS'), (screenSize[0]/2 - 105, 470))
-      screen.blit(self.loadMenuText('QUITTER'), (screenSize[0]/2 - 100, 530))
+      screen.blit(self.loadMenuText(64, 'JOUER'), (screenSize[0]/2 - 75, 350))
+      screen.blit(self.loadMenuText(64, 'REGLES'), (screenSize[0]/2 - 90, 410))
+      screen.blit(self.loadMenuText(64, 'OPTIONS'), (screenSize[0]/2 - 105, 470))
+      screen.blit(self.loadMenuText(64, 'QUITTER'), (screenSize[0]/2 - 100, 530))
     #Menu selection perso
     elif self.state == Menu.SELECT:
       screen.blit(self.lArrow, (screenSize[0]*self.arrowsLeft[0][0], screenSize[1]*self.arrowsLeft[0][1]))
       screen.blit(self.rArrow, (screenSize[0]*self.arrowsLeft[1][0], screenSize[1]*self.arrowsLeft[1][1]))
       screen.blit(self.lArrow, (screenSize[0]*self.arrowsRight[0][0], screenSize[1]*self.arrowsRight[0][1]))
       screen.blit(self.rArrow, (screenSize[0]*self.arrowsRight[1][0], screenSize[1]*self.arrowsRight[1][1]))
-      screen.blit(self.loadMenuText('CHOISISSEZ VOTRE PERSONNAGE :'), (screenSize[0]/2 - 400, 25))
-      screen.blit(self.loadMenuText('CONFIRMER'), (screenSize[0]/2 - 150, 575))
+      screen.blit(self.loadMenuText(64, 'CHOISISSEZ VOTRE PERSONNAGE :'), (screenSize[0]/2 - 400, 25))
+      screen.blit(self.loadMenuText(64, 'CONFIRMER'), (screenSize[0]/2 - 150, 575))
       if self.players != set():
         ps = list(self.players)
         screen.blit(ps[self.playerIndex1].image, ((screenSize[0]*3/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/6))
         screen.blit(ps[self.playerIndex2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
     elif self.state == Menu.REGLES:
       screen.blit(self.arrow, (10, 10))
-      screen.blit(self.loadMenuText('REGLES'), (screenSize[0]/2 - 100, 20))
+      screen.blit(self.loadMenuText(64, 'REGLES'), (screenSize[0]/2 - 100, 20))
+      screen.blit(self.loadMenuText(48, "Chaque joueur reçoit 3 cartes blanches."), (screenSize[0]/2 - 350, 100))
+      screen.blit(self.loadMenuText(48, "Une carte noire est dévoilée (texte à trou)."), (screenSize[0]/2 - 350, 150))
+      screen.blit(self.loadMenuText(48, "Chacun son tour, les joueurs choisissent"), (screenSize[0]/2 - 350, 200))
+      screen.blit(self.loadMenuText(48, "une carte blanche afin de compléter la phrase."), (screenSize[0]/2 - 350, 235))
+      screen.blit(self.loadMenuText(48, "Les joueurs se concerteront apres pour"), (screenSize[0]/2 - 350, 285))
+      screen.blit(self.loadMenuText(48, "désigner le gagnant de cette manche !"), (screenSize[0]/2 - 350, 320))
+      screen.blit(self.loadMenuText(48, "A la fin de la manche, chaque joueur repioche une"), (screenSize[0]/2 - 350, 370))
+      screen.blit(self.loadMenuText(48, "nouvelle carte."), (screenSize[0]/2 - 350, 405))
+      screen.blit(self.loadMenuText(48, "Afin de remporter la partie, il faut enlever"), (screenSize[0]/2 - 350, 455))
+      screen.blit(self.loadMenuText(48, "tout les points de vie de l’adversaire."), (screenSize[0]/2 - 350, 500))
     elif self.state == Menu.INGAME:
       game.players = self.players
       game.show(screen, screenSize)
@@ -89,7 +99,7 @@ class Menu:
   @staticmethod
   def isOnBtn(mx, my, btnSize, bx, by):
     '''
-      Retourne vrai si mx, my est dans le rectangle de la fléche
+      Retourne vrai si mx, my est dans l'élément.
     '''
     return mx < bx + btnSize[0] and mx > bx and my < by + btnSize[1] and my > by
 
@@ -132,6 +142,9 @@ class Menu:
           game.player1 = self.playerIndex1
           game.player2 = self.playerIndex2
           self.state = Menu.INGAME
+      elif self.state == Menu.REGLES:
+        if self.isOnBtn(mouseX, mouseY, (60, 50), 10, 10):
+          self.state = Menu.INTRO
 
 
         size = len(self.players)-1
