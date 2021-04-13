@@ -38,7 +38,7 @@ class Menu:
 
   def loadMenuIntro(self, pathLogo, pathBtnStart):
     self.logo = pygame.image.load(pathLogo)
-    self.logo = pygame.transform.scale(self.logo, (500, 350))
+    self.logo = pygame.transform.scale(self.logo, (500, 300))
 
   def loadRules(self, pathArrow):
     self.arrow = pygame.image.load(pathArrow)
@@ -73,6 +73,7 @@ class Menu:
         screen.blit(ps[self.playerIndex2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
     elif self.state == Menu.REGLES:
       screen.blit(self.arrow, (10, 10))
+      """ Voir plus tard pour tout afficher en un seul blit. """
       screen.blit(self.loadMenuText(64, 'REGLES'), (screenSize[0]/2 - 100, 20))
       screen.blit(self.loadMenuText(48, "Chaque joueur reçoit 3 cartes blanches."), (screenSize[0]/2 - 350, 100))
       screen.blit(self.loadMenuText(48, "Une carte noire est dévoilée (texte à trou)."), (screenSize[0]/2 - 350, 150))
