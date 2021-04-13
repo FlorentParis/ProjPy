@@ -1,6 +1,9 @@
 import pygame
+
+from game import Game
 from personnage import personnage
 
+game = Game()
 class Menu:
   '''
   Menu va afficher le menu, gérer la selection des perso, lancer le jeu
@@ -74,7 +77,9 @@ class Menu:
     elif self.state == Menu.REGLES:
       screen.blit(self.arrow, (10, 10))
       screen.blit(self.loadMenuText('REGLES'), (screenSize[0]/2 - 100, 20))
-    #elif self.state == Menu.OPTION:
+    elif self.state == Menu.INGAME:
+      game.players = self.players
+      game.show(screen, screenSize)
       #afficher les options
 
 
@@ -110,20 +115,24 @@ class Menu:
         if self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsLeft[0][0],
                         screenSize[1] * self.arrowsLeft[0][1]):
           self.playerIndex1-=1
-          #fléche gauche2
+        #fléche gauche2
         elif self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsLeft[1][0],
                           screenSize[1] * self.arrowsLeft[1][1]):
           self.playerIndex1+=1
-          #fleche droite 1
+        #fleche droite 1
         elif self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsRight[0][0],
                           screenSize[1] * self.arrowsRight[0][1]):
           self.playerIndex2-=1
-          #fleche droite 2
+        #fleche droite 2
         elif self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsRight[1][0],
                           screenSize[1] * self.arrowsRight[1][1]):
           self.playerIndex2+=1
+        #btn commencer
         elif self.isOnBtn(mouseX, mouseY, [175, 64], screenSize[0]/2 - 150, 575):
+          game.player1 = self.playerIndex1
+          game.player2 = self.playerIndex2
           self.state = Menu.INGAME
+
 
         size = len(self.players)-1
         if self.playerIndex1 < 0:
