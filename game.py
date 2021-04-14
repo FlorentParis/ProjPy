@@ -1,4 +1,3 @@
-from Menu import *
 from personnage import personnage
 import pygame
 
@@ -11,6 +10,8 @@ class Game:
         self.player1 = 0
         self.player2 = 0
         self.manche = 1
+        self.healthPlayer1 = 30
+        self.healthPlayer2 = 30
 
     def setPlayer(self, players):
         self.players = players
@@ -21,18 +22,23 @@ class Game:
         return img
 
     def show(self, screen, screenSize):
-        for self.manche in range(5):
+        if self.healthPlayer1 > 0 and self.healthPlayer2 > 0:
+            #Afficher une phrase aléa
+            #if self.manche == 1 :
+                #Appel fonction attribution carte x5 pour chaque joueur
+            #else:
+                #Attribuer qu'une carte a chaque joueur
+            screen.blit(self.loadText(64, f"Manche {self.manche}"), (screenSize[0] / 2 - 400, 25))
             ps = list(self.players)
             screen.blit(ps[self.player1].image,((screenSize[0] * 3 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 6))
             screen.blit(ps[self.player2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
-            screen.blit(self.loadText(64, 'Suivant'), (screenSize[0] / 2 - 100, 530))
 
-    def onEvent(self, event, screenSize):
+            #TODO a mettre dans une autre fonction (a mettre apres avoir choisie le gagnant
+            screen.blit(self.loadText(64, 'Manche suivante'), (screenSize[0] / 2 - 100, 530))
+        else :
+            screen.blit(self.loadText(64, f"Game over"), (screenSize[0] / 2 - 400, 25))
 
-    #Fonction Vie
 
-    #Fonction GameOver
-
-    #Fonction attribution des cartes
-
-    #Fonction Manche
+    def setNextManche(self):
+        self.manche += 1
+        #appel de la fonction vie ou sinn on rédit la vie directement ici
