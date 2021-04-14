@@ -62,6 +62,9 @@ class Menu:
     img = font.render(text, True, "WHITE")
     return img
 
+  def loadPersonnage(self, player):
+    self.players.add(player)
+
   def show(self, screen, screenSize):
     #Affichage du background
     screen.blit(self.background, (0, 0))
@@ -83,6 +86,7 @@ class Menu:
         ps = list(self.players)
         screen.blit(ps[self.playerIndex1].image, ((screenSize[0]*3/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/6))
         screen.blit(ps[self.playerIndex2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
+      screen.blit(self.loadMenuText(64, 'CONFIRMER'), (screenSize[0] / 2 - 150, 575))
     #Menu REGLES
     elif self.state == Menu.REGLES:
       screen.blit(self.arrow, (10, 10))
@@ -116,16 +120,11 @@ class Menu:
     elif self.state == Menu.INGAME:
       game.setPlayer(self.players)
       game.show(screen, screenSize)
-      #afficher les options
-
-
-  def loadPersonnage(self, player):
-    self.players.add(player)
 
   @staticmethod
   def isOnBtn(mx, my, btnSize, bx, by):
     '''
-      Retourne vrai si mx, my est dans l'élément.
+      Fonction qui retourne vrai si mx, my se trouve sur l'élément
     '''
     return mx < bx + btnSize[0] and mx > bx and my < by + btnSize[1] and my > by
 
@@ -150,25 +149,25 @@ class Menu:
         #fléche gauche 1
         if self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsLeft[0][0],
                         screenSize[1] * self.arrowsLeft[0][1]):
-          self.playerIndex1-=1
+          self.playerIndex1 -= 1
         #fléche gauche2
         elif self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsLeft[1][0],
                           screenSize[1] * self.arrowsLeft[1][1]):
-          self.playerIndex1+=1
+          self.playerIndex1 += 1
         #fleche droite 1
         elif self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsRight[0][0],
                           screenSize[1] * self.arrowsRight[0][1]):
-          self.playerIndex2-=1
+          self.playerIndex2 -= 1
         #fleche droite 2
         elif self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsRight[1][0],
                           screenSize[1] * self.arrowsRight[1][1]):
-          self.playerIndex2+=1
+          self.playerIndex2 += 1
         #btn commencer
         elif self.isOnBtn(mouseX, mouseY, [175, 64], screenSize[0]/2 - 150, 575):
           game.player1 = self.playerIndex1
           game.player2 = self.playerIndex2
           self.state = Menu.INGAME
-
+        #Boucler la liste lors de la selection
         size = len(self.players)-1
         if self.playerIndex1 < 0:
           self.playerIndex1 = size
@@ -179,7 +178,8 @@ class Menu:
         if self.playerIndex2 > size:
           self.playerIndex2 = 0
       elif self.state == Menu.INGAME:
-        game.onEvent(event, screenSize)
+        if self.isOnBtn(mouseX, mouseY, [200, 64], screenSize[0]/2 - 100, 530):
+          game.setNextManche()
       elif self.state == Menu.REGLES:
         if self.isOnBtn(mouseX, mouseY, (60, 50), 10, 10):
           self.state = Menu.INTRO
