@@ -28,6 +28,7 @@ class Game:
             screen.blit(self.loadText(64, 'Suivant'), (screenSize[0] / 2 - 100, 530))
 
     def onEvent(self, event, screenSize):
+        pass
 
     #Fonction Vie
 
