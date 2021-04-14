@@ -183,4 +183,7 @@ class Menu:
       elif self.state == Menu.REGLES:
         if self.isOnBtn(mouseX, mouseY, (60, 50), 10, 10):
           self.state = Menu.INTRO
+      elif self.state == Menu.OPTION:
+        if self.isOnBtn(mouseX, mouseY, (60, 50), 10, 10):
+          self.state = Menu.INTRO
 
