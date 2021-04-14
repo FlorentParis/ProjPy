@@ -83,11 +83,7 @@ class Menu:
         ps = list(self.players)
         screen.blit(ps[self.playerIndex1].image, ((screenSize[0]*3/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/6))
         screen.blit(ps[self.playerIndex2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
-<<<<<<< HEAD
     #Menu REGLES
-=======
-        screen.blit(self.loadMenuText(64, 'CONFIRMER'), (screenSize[0] / 2 - 150, 575))
->>>>>>> 1bb463a1239eebe509678c5165140bd28fa57c95
     elif self.state == Menu.REGLES:
       screen.blit(self.arrow, (10, 10))
       """ Voir plus tard pour tout afficher en un seul blit. """
