@@ -29,6 +29,9 @@ class Menu:
     self.playerIndex1 = 0
     self.playerIndex2 = 0
     self.state = Menu.INTRO
+    self.music = 5
+    self.effect = 5
+    self.language = 'fr'
 
   def loadBackground(self, pathBackground):
     self.background = pygame.image.load(pathBackground)
@@ -39,11 +42,18 @@ class Menu:
     self.rArrow = pygame.transform.scale(self.rArrow, self.arrowSize)
     self.lArrow = pygame.transform.flip(self.rArrow, True, False)
 
-  def loadMenuIntro(self, pathLogo, pathBtnStart):
+  def loadMenuIntro(self, pathLogo):
     self.logo = pygame.image.load(pathLogo)
     self.logo = pygame.transform.scale(self.logo, (500, 300))
 
   def loadRules(self, pathArrow):
+    self.arrow = pygame.image.load(pathArrow)
+    self.arrow = pygame.transform.scale(self.arrow, (60, 50))
+
+  def loadMenuOptions(self, pathPoly, pathArrow):
+    self.polyL = pygame.image.load(pathPoly)
+    self.polyL = pygame.transform.rotate(self.polyL, 180)
+    self.polyR = pygame.image.load(pathPoly)
     self.arrow = pygame.image.load(pathArrow)
     self.arrow = pygame.transform.scale(self.arrow, (60, 50))
 
@@ -58,14 +68,14 @@ class Menu:
   def show(self, screen, screenSize):
     #Affichage du background
     screen.blit(self.background, (0, 0))
-    #Menu Intro
+    #Menu INTRO
     if self.state == Menu.INTRO:
       screen.blit(self.logo, (screenSize[0]/2 - 250, 5))
       screen.blit(self.loadMenuText(64, 'JOUER'), (screenSize[0]/2 - 75, 350))
       screen.blit(self.loadMenuText(64, 'REGLES'), (screenSize[0]/2 - 90, 410))
       screen.blit(self.loadMenuText(64, 'OPTIONS'), (screenSize[0]/2 - 105, 470))
       screen.blit(self.loadMenuText(64, 'QUITTER'), (screenSize[0]/2 - 100, 530))
-    #Menu selection perso
+    #Menu SELECT
     elif self.state == Menu.SELECT:
       screen.blit(self.loadMenuText(64, 'CHOISISSEZ VOTRE PERSONNAGE :'), (screenSize[0]/2 - 400, 25))
       screen.blit(self.lArrow, (screenSize[0]*self.arrowsLeft[0][0], screenSize[1]*self.arrowsLeft[0][1]))
@@ -76,7 +86,7 @@ class Menu:
         ps = list(self.players)
         screen.blit(ps[self.playerIndex1].image, ((screenSize[0]*3/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/6))
         screen.blit(ps[self.playerIndex2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
-        screen.blit(self.loadMenuText(64, 'CONFIRMER'), (screenSize[0] / 2 - 150, 575))
+    #Menu REGLES
     elif self.state == Menu.REGLES:
       screen.blit(self.arrow, (10, 10))
       """ Voir plus tard pour tout afficher en un seul blit. """
@@ -91,6 +101,21 @@ class Menu:
       screen.blit(self.loadMenuText(48, "nouvelle carte."), (screenSize[0]/2 - 350, 405))
       screen.blit(self.loadMenuText(48, "Afin de remporter la partie, il faut enlever"), (screenSize[0]/2 - 350, 455))
       screen.blit(self.loadMenuText(48, "tout les points de vie de l’adversaire."), (screenSize[0]/2 - 350, 500))
+    elif self.state == Menu.OPTION:
+      screen.blit(self.arrow, (10, 10))
+      screen.blit(self.loadMenuText(64, 'OPTIONS'), (screenSize[0]/2 - 100, 20))
+      screen.blit(self.loadMenuText(48, 'MUSIQUE'), (screenSize[0]/2 - 300 , screenSize[1]/2 - 95))
+      screen.blit(self.polyL, (screenSize[0]/2 , screenSize[1]/2 - 100))
+      screen.blit(self.loadMenuText(48, str(self.music)), (screenSize[0]/2 + 110 , screenSize[1]/2 - 95))
+      screen.blit(self.polyR, (screenSize[0]/2 + 200, screenSize[1]/2 - 100))
+      screen.blit(self.loadMenuText(48, 'EFFETS'), (screenSize[0]/2 - 300, screenSize[1]/2 + 5))
+      screen.blit(self.polyL, (screenSize[0]/2 , screenSize[1]/2))
+      screen.blit(self.loadMenuText(48, str(self.effect)), (screenSize[0]/2 + 110 , screenSize[1]/2 + 5))
+      screen.blit(self.polyR, (screenSize[0]/2 + 200, screenSize[1]/2))
+      screen.blit(self.loadMenuText(48, 'LANGUE'), (screenSize[0]/2 - 300, screenSize[1]/2 + 105))
+      screen.blit(self.polyL, (screenSize[0]/2 , screenSize[1]/2 + 100))
+      screen.blit(self.loadMenuText(48, self.language), (screenSize[0]/2 + 110 , screenSize[1]/2 + 105))
+      screen.blit(self.polyR, (screenSize[0]/2 + 200, screenSize[1]/2 + 100))
     elif self.state == Menu.INGAME:
       game.setPlayer(self.players)
       game.show(screen, screenSize)
