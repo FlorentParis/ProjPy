@@ -3,6 +3,8 @@ import pygame
 from game import Game
 from personnage import personnage
 
+languageList = ['fr', 'en']
+
 game = Game()
 class Menu:
   '''
@@ -29,9 +31,11 @@ class Menu:
     self.playerIndex1 = 0
     self.playerIndex2 = 0
     self.state = Menu.INTRO
+    self.polySize = (38, 44)
     self.music = 5
     self.effect = 5
-    self.language = 'fr'
+    self.language = languageList[1]
+  
 
   def loadBackground(self, pathBackground):
     self.background = pygame.image.load(pathBackground)
@@ -102,6 +106,7 @@ class Menu:
       screen.blit(self.loadMenuText(48, "nouvelle carte."), (screenSize[0]/2 - 350, 405))
       screen.blit(self.loadMenuText(48, "Afin de remporter la partie, il faut enlever"), (screenSize[0]/2 - 350, 455))
       screen.blit(self.loadMenuText(48, "tout les points de vie de l’adversaire."), (screenSize[0]/2 - 350, 500))
+    #Menu OPTION
     elif self.state == Menu.OPTION:
       screen.blit(self.arrow, (10, 10))
       screen.blit(self.loadMenuText(64, 'OPTIONS'), (screenSize[0]/2 - 100, 20))
@@ -183,7 +188,42 @@ class Menu:
       elif self.state == Menu.REGLES:
         if self.isOnBtn(mouseX, mouseY, (60, 50), 10, 10):
           self.state = Menu.INTRO
+      # MENU OPTION
       elif self.state == Menu.OPTION:
         if self.isOnBtn(mouseX, mouseY, (60, 50), 10, 10):
           self.state = Menu.INTRO
+        #Music
+        if self.isOnBtn(mouseX, mouseY, self.polySize, screenSize[0]/2 , screenSize[1]/2 - 100):
+          if self.music <= 0:
+            self.music = 0
+          else:
+            self.music -= 1
+        elif self.isOnBtn(mouseX, mouseY, self.polySize, screenSize[0]/2 + 200, screenSize[1]/2 - 100):
+          if self.music >= 10:
+            self.music = 10
+          else:
+            self.music += 1
+        #Effect
+        elif self.isOnBtn(mouseX, mouseY, self.polySize, screenSize[0]/2 , screenSize[1]/2):
+          if self.effect <= 0:
+            self.effect = 0
+          else:
+            self.effect -= 1
+        elif self.isOnBtn(mouseX, mouseY, self.polySize, screenSize[0]/2 + 200, screenSize[1]/2):
+          if self.effect >= 10:
+            self.effect = 10
+          else:
+            self.effect += 1
+        #Language
+        elif self.isOnBtn(mouseX, mouseY, self.polySize, screenSize[0]/2 , screenSize[1]/2 + 100):
+          print('test1' + languageList.index('en'))
+          if languageList.index(self.language) == 0:
+            pass
+          else:
+            self.language = languageList(languageList.index(self.language) - 1)
+        elif self.isOnBtn(mouseX, mouseY, self.polySize, screenSize[0]/2 + 200, screenSize[1]/2 + 100):
+          if languageList.index(self.language) == len(languageList):
+            pass
+          else:
+            self.language = languageList(languageList.index(self.language) + 1)
 
