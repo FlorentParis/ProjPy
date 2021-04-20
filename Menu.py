@@ -216,7 +216,6 @@ class Menu:
             self.effect += 1
         #Language
         elif self.isOnBtn(mouseX, mouseY, self.polySize, screenSize[0]/2 , screenSize[1]/2 + 100):
-          print('test1' + languageList.index('en'))
           if languageList.index(self.language) == 0:
             pass
           else:
