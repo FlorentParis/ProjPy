@@ -8,6 +8,7 @@ class personnage:
     self.imagePath = f"assets/{name}.png"
     self.image = pygame.image.load(self.imagePath)
     self.image = pygame.transform.scale(self.image, self.SIZE)
+    self.health = 30
 
   def __hash__(self):
     '''
