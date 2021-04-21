@@ -225,4 +225,3 @@ class Menu:
             pass
           else:
             self.language = languageList(languageList.index(self.language) + 1)
-

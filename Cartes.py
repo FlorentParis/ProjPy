@@ -1,4 +1,3 @@
-
 import random
 
 listeMots = ("Ta face de citron", "Une huitre périmée", "Ton père au ski"
@@ -16,17 +15,17 @@ listePhrases = ("Te voir c'est aussi décevant que ... "
                 , "Manger avec toi c'est aussi degueu que ..."
                 , "J'ai tellement honte de toi depuis que ... est devenu une de tes habitudes.")
 
-#fonction qui print des cartes alea
-def aleaMots(nbMots):
-  if nbMots == 1:
-    return print(random.choice(listeMots))
-  else:
-    for i in range(nbMots):
-      print(random.choice(listeMots))
+deckPlayer1 = []
+deckPlayer2 = []
 
+def aleaMots():
+    for i in range(5):
+      if len(deckPlayer1) == 5 and len(deckPlayer2) == 5:
+        break
+      else:
+        deckPlayer1.append(random.choice(listeMots))
+        deckPlayer2.append(random.choice(listeMots))
 
-
-#Fonction qui print une phrase alea
 def aleaPhrase():
   return print(random.choice(listePhrases))
 
