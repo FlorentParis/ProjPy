@@ -7,11 +7,11 @@ listeMots = ("Ta face de citron", "Une huitre périmée", "Ton père au ski"
                 , "dire chocolatine", "Des pates au sucre", "des t-shirt banane"
                 , "la téléréalité", "Fortnite", "Sortir avec un Kikou")
 
-listePhrases = ("Te voir c'est aussi décevant que ... "
-                , "Je préfére ... que de te fréquenter. "
+listePhrases = ("Te voir c'est aussi décevant que ..."
+                , "Je préfére ... que de te fréquenter."
                 , "Tu est un mélange entre ... et une chausette sale."
                 , "Tout les apres-midi tu dois penser à ..."
-                , "Je t'ai vu avec ... entrain de twerker"
+                , "Je t'ai vu avec ... entrain de twerker."
                 , "Manger avec toi c'est aussi degueu que ..."
                 , "J'ai tellement honte de toi depuis que ... est devenu une de tes habitudes.")
 
