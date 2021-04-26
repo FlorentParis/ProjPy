@@ -27,6 +27,7 @@ class Game:
         ps = list(self.players)
         if ps[self.player1].health > 0 and ps[self.player2].health > 0:
             Cartes.aleaMots()
+            self.displayPhrase(screen, screenSize)
             print(self.deckPlayer1, self.deckPlayer2)
             screen.blit(self.loadText(64, f"Manche {self.manche}"), (screenSize[0] / 2, screenSize[1] / 2))
             pygame.draw.rect(screen,FOND,(screenSize[0] / 12,screenSize[1] / 24,360,15))
@@ -46,3 +47,11 @@ class Game:
     def setNextManche(self):
         self.manche += 1
         #appel de la fonction vie ou sinn on rédit la vie directement ici
+
+    def displayCartes(self):
+        pass
+
+    def displayPhrase(self, screen, screenSize):
+        pygame.draw.rect(screen,(0,0,0),(screenSize[0] / 2 - 120,screenSize[1] / 2 -160,240,320))
+        Cartes.aleaPhrase()
+        screen.blit(self.loadText(24, Cartes.listePhrasesDejavu[-1] ), (screenSize[0] / 2 - 160, screenSize[1] / 2))
