@@ -15,8 +15,8 @@ listePhrases = ("Te voir c'est aussi décevant que ..."
                 , "Manger avec toi c'est aussi degueu que ..."
                 , "J'ai tellement honte de toi depuis que ... est devenu une de tes habitudes.")
 
-listePhrasesDejavu = []
-
+Phrase = []
+historique = []
 deckPlayer1 = []
 deckPlayer2 = []
 
@@ -29,15 +29,19 @@ def aleaMots():
         deckPlayer2.append(random.choice(listeMots))
 
 def aleaPhrase():
-  phrase = random.choice(listePhrases)
-  if phrase in listePhrasesDejavu:
-    aleaPhrase()
-  else :
-    if listePhrasesDejavu.length == 7:
-      listePhrasesDejavu = []
-      aleaPhrase()
-    else :
-      listePhrasesDejavu.append(phrase)
+  newPhrase = random.choice(listePhrases)
+  if len(historique) == 7:
+    historique[:] = []
+  else:
+    if len(Phrase) < 1:
+      if newPhrase in historique:
+        aleaPhrase()
+      else:
+        Phrase.append(newPhrase)
+        historique.append(newPhrase)
+
+
+
 
 #Fonction qui affiche le résultat / la combinaison des cartes
 #Faire une fonction qui retournera la phrase + le mot choisi par le joueur, sans qu'on retrouve les "..."
