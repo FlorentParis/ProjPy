@@ -183,11 +183,9 @@ class Menu:
         if self.playerIndex2 > size:
           self.playerIndex2 = 0
       elif self.state == Menu.INGAME:
-        if self.isOnBtn(mouseX, mouseY, [200, 64], screenSize[0]/2 - 100, 530):
+        if self.isOnBtn(mouseX, mouseY, [400, 64], screenSize[0]/2 - 100, 530):
           game.setNextManche()
-      elif self.state == Menu.REGLES:
-        if self.isOnBtn(mouseX, mouseY, (60, 50), 10, 10):
-          self.state = Menu.INTRO
+          #OnBTN player gagnant --> appeler la fonction réduction vie (param perdant)
       # MENU OPTION
       elif self.state == Menu.OPTION:
         if self.isOnBtn(mouseX, mouseY, (60, 50), 10, 10):

@@ -31,6 +31,7 @@ def aleaMots():
 def aleaPhrase():
   newPhrase = random.choice(listePhrases)
   if len(historique) == 7:
+    #réinitialiser la liste historique
     historique[:] = []
   else:
     if len(Phrase) < 1:

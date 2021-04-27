@@ -2,11 +2,16 @@ import Cartes
 from personnage import personnage
 import pygame
 
-FOND = pygame.Color(87, 95, 65)
-CLAIR = pygame.Color(140, 156, 93)
+
 
 class Game:
+
+    FOND = pygame.Color(87, 95, 65)
+    CLAIR = pygame.Color(140, 156, 93)
+
     def __init__(self):
+        self.viewLifeP1 = 360
+        self.viewLifeP2 = 360
         self.players = set()
         self.player1 = 0
         self.player2 = 0
@@ -32,10 +37,7 @@ class Game:
             self.displayPhrase(screen, screenSize)
             print(self.phrase)
             screen.blit(self.loadText(64, f"Manche {self.manche}"), (screenSize[0] / 2, screenSize[1] / 2))
-            pygame.draw.rect(screen,FOND,(screenSize[0] / 12,screenSize[1] / 24,360,15))
-            pygame.draw.rect(screen,CLAIR,(screenSize[0] / 12,screenSize[1] / 24,240,15))
-            pygame.draw.rect(screen,FOND,(screenSize[0] / 2 + screenSize[0] / 7,screenSize[1] / 24,360,15))
-            pygame.draw.rect(screen,CLAIR,(screenSize[0] / 2 + screenSize[0] / 7,screenSize[1] / 24,120,15))
+            self.afficheHealth(screen, screenSize, ps)
             screen.blit(self.loadText(24, ps[self.player1].name), (screenSize[0] / 12, screenSize[1] / 12))
             screen.blit(self.loadText(72, 'VS'), (screenSize[0] / 2 - 36, screenSize[1] / 24))
             screen.blit(self.loadText(24, ps[self.player2].name), (screenSize[0] - screenSize[0] / 6, screenSize[1] / 12))
@@ -46,15 +48,23 @@ class Game:
         else:
             screen.blit(self.loadText(64, f"Game over"), (screenSize[0] / 2 - 400, 25))
 
+    def afficheHealth(self, screen, screenSize):
+        #Affichage Vie de base (gris)
+        pygame.draw.rect(screen, Game.FOND, (screenSize[0] / 12, screenSize[1] / 24, 360, 15))
+        pygame.draw.rect(screen, Game.FOND, (screenSize[0] / 2 + screenSize[0] / 7, screenSize[1] / 24, 360, 15))
+        #Affichage Vie restant (vert)
+        pygame.draw.rect(screen, Game.CLAIR,(screenSize[0] / 12, screenSize[1] / 24, self.viewLifeP1, 15))
+        pygame.draw.rect(screen, Game.CLAIR, (screenSize[0] / 2 + screenSize[0] / 7, screenSize[1] / 24, self.viewLifeP2, 15))
+
     def setNextManche(self):
+        ps = list(self.players)
         self.manche += 1
         if len(self.phrase) == 1:
             del self.phrase[-1]
-        #appel de la fonction vie ou sinn on rédit la vie directement ici
-
-    #def displayCartes(self):
-        #pass
-
+        #A mettre dans une autre fonction qu'on appelera en fonction du perdant (param player)
+        ps[self.player1].health -= 10
+        print(ps[self.player1].health)
+        self.viewLifeP1 -= 120
 
     def displayPhrase(self, screen, screenSize):
         pygame.draw.rect(screen,(0,0,0),(screenSize[0] / 2 - 120,screenSize[1] / 2 -160,240,320))
