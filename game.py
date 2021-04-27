@@ -24,6 +24,11 @@ class Game:
         img = font.render(text, True, "WHITE")
         return img
 
+    def loadTextV2(self, size, text):
+        font = pygame.font.SysFont(None, size)
+        img = font.render(text, True, "BLACK")
+        return img
+
     def show(self, screen, screenSize):
         ps = list(self.players)
         if ps[self.player1].health > 0 and ps[self.player2].health > 0:
@@ -31,6 +36,7 @@ class Game:
             Cartes.aleaPhrase()
             self.displayPhrase(screen, screenSize)
             print(self.phrase)
+            self.displayMots(screen, screenSize, self.deckPlayer1)
             screen.blit(self.loadText(64, f"Manche {self.manche}"), (screenSize[0] / 2, screenSize[1] / 2))
             pygame.draw.rect(screen,FOND,(screenSize[0] / 12,screenSize[1] / 24,360,15))
             pygame.draw.rect(screen,CLAIR,(screenSize[0] / 12,screenSize[1] / 24,240,15))
@@ -59,3 +65,16 @@ class Game:
     def displayPhrase(self, screen, screenSize):
         pygame.draw.rect(screen,(0,0,0),(screenSize[0] / 2 - 120,screenSize[1] / 2 -160,240,320))
         screen.blit(self.loadText(24, self.phrase[0]), (screenSize[0] / 2 - 160, screenSize[1] / 2))
+
+    def displayMots(self, screen, screenSize, deck):
+        i = 0
+        dispoMots = [(screenSize[0] / 2 - 660, screenSize[1] / 2 + 240), (screenSize[0] / 2 - 390, screenSize[1] / 2 + 240), (screenSize[0] / 2 - 120, screenSize[1] / 2 + 240), (screenSize[0] / 2 + 150, screenSize[1] / 2 + 240), (screenSize[0] / 2 + 420, screenSize[1] / 2 + 240)]
+
+        pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 - 660, screenSize[1] / 2 + 240, 240, 320))
+        pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 - 390, screenSize[1] / 2 + 240, 240, 320))
+        pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 - 120, screenSize[1] / 2 + 240, 240, 320))
+        pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 + 150, screenSize[1] / 2 + 240, 240, 320))
+        pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 + 420, screenSize[1] / 2 + 240, 240, 320))
+        for mots in deck:
+            screen.blit(self.loadTextV2(24, mots), dispoMots[i])
+            i += 1
