@@ -45,11 +45,11 @@ class Menu:
     self.rArrow = pygame.transform.scale(self.rArrow, self.arrowSize)
     self.lArrow = pygame.transform.flip(self.rArrow, True, False)
 
-  def loadMenuIntro(self, pathLogo):
+  def loadLogo(self, pathLogo):
     self.logo = pygame.image.load(pathLogo)
     self.logo = pygame.transform.scale(self.logo, (500, 300))
 
-  def loadRules(self, pathArrow):
+  def loadArrowBack(self, pathArrow):
     self.arrow = pygame.image.load(pathArrow)
     self.arrow = pygame.transform.scale(self.arrow, (60, 50))
 
@@ -57,8 +57,7 @@ class Menu:
     self.polyL = pygame.image.load(pathPoly)
     self.polyL = pygame.transform.rotate(self.polyL, 180)
     self.polyR = pygame.image.load(pathPoly)
-    self.arrow = pygame.image.load(pathArrow)
-    self.arrow = pygame.transform.scale(self.arrow, (60, 50))
+    self.loadArrowBack(pathArrow)
 
   def loadMenuText(self, size, text):
     font = pygame.font.SysFont(None, size)
@@ -149,6 +148,7 @@ class Menu:
         elif self.isOnBtn(mouseX, mouseY, [200, 64], screenSize[0]/2 - 100, 530):
           pygame.quit()
           print("Fermeture du jeu")
+      # SELECTION DES PERSONNAGES
       elif self.state == Menu.SELECT:
         #fléche gauche 1
         if self.isOnBtn(mouseX, mouseY, self.arrowSize, screenSize[0] * self.arrowsLeft[0][0],
@@ -181,9 +181,13 @@ class Menu:
           self.playerIndex2 = size
         if self.playerIndex2 > size:
           self.playerIndex2 = 0
+      # EN JEU
       elif self.state == Menu.INGAME:
         game.onEvent(screenSize, mouseX, mouseY)
-          #OnBTN player gagnant --> appeler la fonction réduction vie (param perdant)
+      # MENU REGLE
+      elif self.state == Menu.REGLES:
+        if self.isOnBtn(mouseX, mouseY, (60, 50), 10, 10):
+          self.state = Menu.INTRO
       # MENU OPTION
       elif self.state == Menu.OPTION:
         if self.isOnBtn(mouseX, mouseY, (60, 50), 10, 10):
@@ -221,3 +225,4 @@ class Menu:
             pass
           else:
             self.language = languageList(languageList.index(self.language) + 1)
+

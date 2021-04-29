@@ -21,8 +21,8 @@ screen = pygame.display.set_mode(SCREENSIZE)
 
 #init Menu
 menu = Menu()
-menu.loadMenuIntro(PATH_LOGO)
-menu.loadRules(PATH_ARROW)
+menu.loadLogo(PATH_LOGO)
+menu.loadArrowBack(PATH_ARROW)
 background = menu.loadBackground(PATH_BACKGROUND)
 menu.loadArrow(PATH_R_ARROW)
 menu.loadMenuOptions(PATH_POLY, PATH_ARROW)
