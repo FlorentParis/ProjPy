@@ -35,7 +35,6 @@ class Menu:
     self.music = 5
     self.effect = 5
     self.language = languageList[1]
-  
 
   def loadBackground(self, pathBackground):
     self.background = pygame.image.load(pathBackground)
@@ -183,8 +182,7 @@ class Menu:
         if self.playerIndex2 > size:
           self.playerIndex2 = 0
       elif self.state == Menu.INGAME:
-        if self.isOnBtn(mouseX, mouseY, [400, 64], screenSize[0]/2 - 100, 530):
-          game.setNextManche()
+        game.onEvent(screenSize, mouseX, mouseY)
           #OnBTN player gagnant --> appeler la fonction réduction vie (param perdant)
       # MENU OPTION
       elif self.state == Menu.OPTION:
