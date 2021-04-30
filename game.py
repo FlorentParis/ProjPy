@@ -10,6 +10,7 @@ class Game:
     CLAIR = pygame.Color(140, 156, 93)
 
     def __init__(self):
+        self.tourPlayer1 = True #Si True = tour du player1, sinon tour du player 2
         self.viewLifeP1 = 360
         self.viewLifeP2 = 360
         self.players = set()
@@ -19,6 +20,8 @@ class Game:
         self.deckPlayer1 = Cartes.deckPlayer1
         self.deckPlayer2 = Cartes.deckPlayer2
         self.manche = 1
+        self.choixPlayer1 = ""
+        self.choixPlayer2 = ""
 
     def setPlayer(self, players):
         self.players = players
@@ -91,6 +94,29 @@ class Game:
         from Menu import Menu
         if Menu.isOnBtn(mouseX, mouseY, [400, 64], screenSize[0]/2 - 100, 530):
           self.setNextManche()
+        #Interaction Cartes Decks
+        if (self.tourPlayer1):
+            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 660, screenSize[1] / 2 + 240):
+                self.choixPlayer1 = self.deckPlayer1[0]
+            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 390, screenSize[1] / 2 + 240):
+                self.choixPlayer1 = self.deckPlayer1[1]
+            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 120, screenSize[1] / 2 + 240):
+                self.choixPlayer1 = self.deckPlayer1[2]
+            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 150, screenSize[1] / 2 + 240):
+                self.choixPlayer1 = self.deckPlayer1[3]
+            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 420, screenSize[1] / 2 + 240):
+                self.choixPlayer1 = self.deckPlayer1[4]
+        if (self.tourPlayer1 == False):
+            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 660, screenSize[1] / 2 + 240):
+                self.choixPlayer2 = self.deckPlayer2[0]
+            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 390, screenSize[1] / 2 + 240):
+                self.choixPlayer2 = self.deckPlayer2[1]
+            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 120, screenSize[1] / 2 + 240):
+                self.choixPlayer2 = self.deckPlayer2[2]
+            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 150, screenSize[1] / 2 + 240):
+                self.choixPlayer2 = self.deckPlayer2[3]
+            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 420, screenSize[1] / 2 + 240):
+                self.choixPlayer2 = self.deckPlayer2[4]
 
     def setNextManche(self):
         ps = list(self.players)
