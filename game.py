@@ -11,6 +11,7 @@ class Game:
 
     def __init__(self):
         self.tourPlayer1 = True #Si True = tour du player1, sinon tour du player 2
+        self.selectionGagnant = False #Si False n'affiche pas les résultat et désactive les Event
         self.viewLifeP1 = 360
         self.viewLifeP2 = 360
         self.players = set()
@@ -55,29 +56,29 @@ class Game:
 
     def loadMots(self, screen, screenSize, deck):
         Cartes.aleaMots()
-        i = 0
-        dispoMots = [(screenSize[0] / 2 - 660, screenSize[1] / 2 + 240), (screenSize[0] / 2 - 390, screenSize[1] / 2 + 240), (screenSize[0] / 2 - 120, screenSize[1] / 2 + 240), (screenSize[0] / 2 + 150, screenSize[1] / 2 + 240), (screenSize[0] / 2 + 420, screenSize[1] / 2 + 240)]
-        pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 - 660, screenSize[1] / 2 + 240, 240, 320))
-        pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 - 390, screenSize[1] / 2 + 240, 240, 320))
-        pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 - 120, screenSize[1] / 2 + 240, 240, 320))
-        pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 + 150, screenSize[1] / 2 + 240, 240, 320))
-        pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 + 420, screenSize[1] / 2 + 240, 240, 320))
-        for mots in deck:
-            screen.blit(self.loadTextV2(24, mots), dispoMots[i])
-            i += 1
+        if self.selectionGagnant:
+            pygame.draw.rect(screen, (255, 255, 255), (screenSize[0] / 2 - 390, screenSize[1] / 2 + 240, 240, 320))
+            pygame.draw.rect(screen, (255, 255, 255), (screenSize[0] / 2 - 120, screenSize[1] / 2 + 240, 240, 320))
+            pygame.draw.rect(screen, (255, 255, 255), (screenSize[0] / 2 + 150, screenSize[1] / 2 + 240, 240, 320))
+            screen.blit(self.loadTextV2(24, self.choixPlayer1), (screenSize[0] / 2 - 390, screenSize[1] / 2 + 240))
+            screen.blit(self.loadTextV2(24, "Egalité"), (screenSize[0] / 2 - 120, screenSize[1] / 2 + 240))
+            screen.blit(self.loadTextV2(24, self.choixPlayer2), (screenSize[0] / 2 + 150, screenSize[1] / 2 + 240))
+        else:
+            i = 0
+            dispoMots = [(screenSize[0] / 2 - 660, screenSize[1] / 2 + 240), (screenSize[0] / 2 - 390, screenSize[1] / 2 + 240), (screenSize[0] / 2 - 120, screenSize[1] / 2 + 240), (screenSize[0] / 2 + 150, screenSize[1] / 2 + 240), (screenSize[0] / 2 + 420, screenSize[1] / 2 + 240)]
+            pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 - 660, screenSize[1] / 2 + 240, 240, 320))
+            pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 - 390, screenSize[1] / 2 + 240, 240, 320))
+            pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 - 120, screenSize[1] / 2 + 240, 240, 320))
+            pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 + 150, screenSize[1] / 2 + 240, 240, 320))
+            pygame.draw.rect(screen, (255,255,255), (screenSize[0] / 2 + 420, screenSize[1] / 2 + 240, 240, 320))
+            for mots in deck:
+                screen.blit(self.loadTextV2(24, mots), dispoMots[i])
+                i += 1
 
     def show(self, screen, screenSize):
         ps = list(self.players)
         self.loadHealth(screen, screenSize)
-        if ps[self.player1].health > 0 and ps[self.player2].health > 0:
-            #Donne une phrase aléatoire et l'affiche
-            self.loadPhrase(screen, screenSize)
-            print(self.choixPlayer1)
-            #Donne des mots aléatoire et les affiches
-            if (self.tourPlayer1):
-                self.loadMots(screen, screenSize, self.deckPlayer1)
-            else:
-                self.loadMots(screen, screenSize, self.deckPlayer2)
+        if self.manche == 1:
             screen.blit(self.loadText(64, f"Manche {self.manche}"), (screenSize[0] / 2, screenSize[1] / 2))
             #Affichae des noms + image du joueur
             screen.blit(self.loadText(24, ps[self.player1].name), (screenSize[0] / 12, screenSize[1] / 12))
@@ -85,55 +86,107 @@ class Game:
             screen.blit(self.loadText(24, ps[self.player2].name), (screenSize[0] - screenSize[0] / 6, screenSize[1] / 12))
             screen.blit(ps[self.player1].image,((screenSize[0] * 3 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 6))
             screen.blit(ps[self.player2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
-            #TODO a mettre dans une autre fonction (a mettre apres avoir choisie le gagnant
-            screen.blit(self.loadText(64, 'Manche suivante'), (screenSize[0] / 2 - 100, 530))
+            screen.blit(self.loadText(64, 'Commencer'), (screenSize[0] / 2 - 100, 530))
         else:
-            #TODO Afficher Texte + Gagnant
-            screen.blit(self.loadText(64, f"Victoire"), (screenSize[0] * 5 / 12, screenSize[1]* 1/6))
-            if ps[self.player1].health == 0:
-                screen.blit(ps[self.player2].image, ((screenSize[0] * 6 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 6))
+            if ps[self.player1].health > 0 and ps[self.player2].health > 0 and self.selectionGagnant == False:
+                # Affiche une phrase aléatoire
+                self.loadPhrase(screen, screenSize)
+                print(self.selectionGagnant)
+                # Tour joueur 1
+                if (self.tourPlayer1):
+                    self.loadMots(screen, screenSize, self.deckPlayer1)
+                    screen.blit(self.loadText(24, ps[self.player1].name), (screenSize[0] / 12, screenSize[1] / 12))
+                    screen.blit(ps[self.player1].image, ((screenSize[0] * 3 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 6))
+                else: #Tour joueur 2
+                    self.loadMots(screen, screenSize, self.deckPlayer2)
+                    screen.blit(self.loadText(24, ps[self.player2].name),(screenSize[0] - screenSize[0] / 6, screenSize[1] / 12))
+                    screen.blit(ps[self.player2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)- personnage.SIZE[1]/5))
+            elif self.selectionGagnant:
+                self.loadPhrase(screen, screenSize)
+                self.loadMots(screen, screenSize, self.deckPlayer2)
+                screen.blit(self.loadText(24, ps[self.player1].name), (screenSize[0] / 12, screenSize[1] / 12))
+                screen.blit(self.loadText(72, 'VS'), (screenSize[0] / 2 - 36, screenSize[1] / 24))
+                screen.blit(self.loadText(24, ps[self.player2].name),(screenSize[0] - screenSize[0] / 6, screenSize[1] / 12))
+                screen.blit(ps[self.player1].image, ((screenSize[0] * 3 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 6))
+                screen.blit(ps[self.player2].image, ((screenSize[0] * 9 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 5))
+                #TODO Afficher les deux réponse en dessous des personnages + un carré entre les deux pour "égalité"
+            elif ps[self.player1].health == 0 or ps[self.player2].health == 0:
+                screen.blit(self.loadText(64, f"Victoire"), (screenSize[0] * 5 / 12, screenSize[1] * 1/6))
+                if ps[self.player1].health == 0:
+                    screen.blit(ps[self.player2].image, ((screenSize[0] * 6 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 6))
+                else:
+                    screen.blit(ps[self.player2].image, ((screenSize[0] * 6 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 5))
             else:
-                screen.blit(ps[self.player1].image, ((screenSize[0] * 6 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1 / 6]))
+                screen.blit(self.loadText(64, "Erreur! relancer le jeu"), (screenSize[0] * 5 / 12, screenSize[1] * 1 / 6))
 
     def onEvent(self, screenSize, mouseX, mouseY):
         from Menu import Menu
-        if Menu.isOnBtn(mouseX, mouseY, [400, 64], screenSize[0]/2 - 100, 530):
-          self.setNextManche()
+        if self.manche == 1:
+            if Menu.isOnBtn(mouseX, mouseY, [400, 64], screenSize[0]/2 - 100, 530):
+              self.setNextManche(None)
         #Interaction Cartes deck Player2
-        if (self.tourPlayer1):
-            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 660, screenSize[1] / 2 + 240):
-                self.choixPlayer1 = self.deckPlayer1[0]
-                self.tourPlayer1 = False
-            elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 390, screenSize[1] / 2 + 240):
-                self.choixPlayer1 = self.deckPlayer1[1]
-                self.tourPlayer1 = False
-            elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 120, screenSize[1] / 2 + 240):
-                self.choixPlayer1 = self.deckPlayer1[2]
-                self.tourPlayer1 = False
-            elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 150, screenSize[1] / 2 + 240):
-                self.choixPlayer1 = self.deckPlayer1[3]
-                self.tourPlayer1 = False
-            elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 420, screenSize[1] / 2 + 240):
-                self.choixPlayer1 = self.deckPlayer1[4]
-                self.tourPlayer1 = False
-        else: #Interaction Cartes deck Player2
-            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 660, screenSize[1] / 2 + 240):
-                self.choixPlayer2 = self.deckPlayer2[0]
-            elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 390, screenSize[1] / 2 + 240):
+        elif not self.selectionGagnant:
+            if (self.tourPlayer1):
+                if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 660, screenSize[1] / 2 + 240):
+                    self.choixPlayer1 = self.deckPlayer1[0]
+                    self.tourPlayer1 = False
+                elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 390, screenSize[1] / 2 + 240):
+                    self.choixPlayer1 = self.deckPlayer1[1]
+                    self.tourPlayer1 = False
+                elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 120, screenSize[1] / 2 + 240):
+                    self.choixPlayer1 = self.deckPlayer1[2]
+                    self.tourPlayer1 = False
+                elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 150, screenSize[1] / 2 + 240):
+                    self.choixPlayer1 = self.deckPlayer1[3]
+                    self.tourPlayer1 = False
+                elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 420, screenSize[1] / 2 + 240):
+                    self.choixPlayer1 = self.deckPlayer1[4]
+                    self.tourPlayer1 = False
+            else: #Interaction Cartes deck Player2
+                if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 660, screenSize[1] / 2 + 240):
+                    self.choixPlayer2 = self.deckPlayer2[0]
+                    self.selectionGagnant = True
+                elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 390, screenSize[1] / 2 + 240):
+                    self.choixPlayer2 = self.deckPlayer2[1]
+                    self.selectionGagnant = True
+                elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 120, screenSize[1] / 2 + 240):
+                    self.choixPlayer2 = self.deckPlayer2[2]
+                    self.selectionGagnant = True
+                elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 150, screenSize[1] / 2 + 240):
+                    self.choixPlayer2 = self.deckPlayer2[3]
+                    self.selectionGagnant = True
+                elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 420, screenSize[1] / 2 + 240):
+                    self.selectionGagnant = True
+        elif self.selectionGagnant: #Interaction Selection du gagnant
+            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 390, screenSize[1] / 2 + 240):
                 self.choixPlayer2 = self.deckPlayer2[1]
+                self.setNextManche(self.player2)
             elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 120, screenSize[1] / 2 + 240):
                 self.choixPlayer2 = self.deckPlayer2[2]
+                self.setNextManche(None)
             elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 150, screenSize[1] / 2 + 240):
                 self.choixPlayer2 = self.deckPlayer2[3]
-            elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 420, screenSize[1] / 2 + 240):
-                self.choixPlayer2 = self.deckPlayer2[4]
+                self.setNextManche(self.player1)
+        else: #Interaction fin de game
+            pass
 
-    def setNextManche(self):
-        ps = list(self.players)
+
+    def setNextManche(self, playerPerdant):
+        if self.manche > 1:
+            ps = list(self.players)
+            self.selectionGagnant = False
+            self.tourPlayer1 = True
+            index1 = self.deckPlayer1.index(self.choixPlayer1)
+            index2 = self.deckPlayer2.index(self.choixPlayer2)
+            del self.deckPlayer1[index1]
+            del self.deckPlayer2[index2]
+            if len(self.phrase) == 1:
+                del self.phrase[-1]
+            if playerPerdant == self.player1:
+                ps[self.player1].health -= 10
+                print(ps[self.player1].health)
+                self.viewLifeP1 -= 120
+            if playerPerdant == self.player2:
+                ps[self.player2].health -= 10
+                self.viewLifeP2 -= 120
         self.manche += 1
-        if len(self.phrase) == 1:
-            del self.phrase[-1]
-        #A mettre dans une autre fonction qu'on appelera en fonction du perdant (param player)
-        ps[self.player1].health -= 10
-        print(ps[self.player1].health)
-        self.viewLifeP1 -= 120
