@@ -7,7 +7,7 @@ Afin de gagner dans ce combat d’insultes, il faudra creer l'insulte la plus pe
 
 Les mots proposés doivent être tirés au hasard parmi une liste préétablie (parmi la liste des mots, il faut bien entendu proposer de quoi réaliser une phrase correcte. Chaque joueur en choisit un pour sa phrase et ce mot est retiré de la liste limitant le choix pour la suite de la manche.
 
-Le gagnant de la manche est désigner à la fin de la manche par les autres joueurs ou pas concertation entre les joueurs.
+Le gagnant de la manche est désigné à la fin de la manche par les autres joueurs ou par concertation entre les joueurs.
 
 ## Contributeurs
 - Matias Giselle
