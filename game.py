@@ -91,7 +91,7 @@ class Game:
             if ps[self.player1].health > 0 and ps[self.player2].health > 0 and self.selectionGagnant == False:
                 # Affiche une phrase aléatoire
                 self.loadPhrase(screen, screenSize)
-                print(self.selectionGagnant)
+                print(self.deckPlayer2)
                 # Tour joueur 1
                 if (self.tourPlayer1):
                     self.loadMots(screen, screenSize, self.deckPlayer1)
@@ -156,6 +156,7 @@ class Game:
                     self.choixPlayer2 = self.deckPlayer2[3]
                     self.selectionGagnant = True
                 elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 420, screenSize[1] / 2 + 240):
+                    self.choixPlayer2 = self.deckPlayer1[4]
                     self.selectionGagnant = True
         elif self.selectionGagnant: #Interaction Selection du gagnant
             if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 390, screenSize[1] / 2 + 240):
