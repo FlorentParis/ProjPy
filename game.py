@@ -78,6 +78,8 @@ class Game:
     def show(self, screen, screenSize):
         ps = list(self.players)
         self.loadHealth(screen, screenSize)
+        print("choix" + self.choixPlayer1, self.choixPlayer2)
+        print(self.deckPlayer1, self.deckPlayer2)
         if self.manche == 1:
             screen.blit(self.loadText(64, f"Manche {self.manche}"), (screenSize[0] / 2, screenSize[1] / 2))
             #Affichae des noms + image du joueur
@@ -156,7 +158,7 @@ class Game:
                     self.choixPlayer2 = self.deckPlayer2[3]
                     self.selectionGagnant = True
                 elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 29 / 36, screenSize[1] - screenSize[1] /8):
-                    self.choixPlayer2 = self.deckPlayer1[4]
+                    self.choixPlayer2 = self.deckPlayer2[4]
                     self.selectionGagnant = True
         elif self.selectionGagnant: #Interaction Selection du gagnant
             if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 390, screenSize[1] / 2 + 240):
@@ -191,7 +193,7 @@ class Game:
                 self.viewLifeP2 -= 120
         self.manche += 1
 
-    def transition(self, screen, text):
-        pygame.draw.rect(screen, (0,0,0), (screenSize[0] / 12, screenSize[1] / 6, screenSize[0] * 5 / 6, screenSize[1] * 4 / 6))
-        screen.blit(self.loadText(24, text), (screenSize[0] / 12, screenSize[1] / 2))
-        time.sleep(3)
+    #def transition(self, text):
+    #    pygame.draw.rect(screen, (0,0,0), (screenSize[0] / 2 - 500, screenSize[1] / 2 - 100, 1000, 200))
+    #    screen.blit(self.loadText(24, text), (screenSize[0] / 12, screenSize[1] / 12))
+    #    time.sleep(3)
