@@ -171,7 +171,6 @@ class Game:
         else: #Interaction fin de game
             pass
 
-
     def setNextManche(self, playerPerdant):
         if self.manche > 1:
             ps = list(self.players)
@@ -192,7 +191,7 @@ class Game:
                 self.viewLifeP2 -= 120
         self.manche += 1
 
-    def transition(self, text):
-        pygame.draw.rect(screen, (0,0,0), (screenSize[0] / 2 - 500, screenSize[1] / 2 - 100, 1000, 200))
-        screen.blit(self.loadText(24, text), (screenSize[0] / 12, screenSize[1] / 12))
+    def transition(self, screen, text):
+        pygame.draw.rect(screen, (0,0,0), (screenSize[0] / 12, screenSize[1] / 6, screenSize[0] * 5 / 6, screenSize[1] * 4 / 6))
+        screen.blit(self.loadText(24, text), (screenSize[0] / 12, screenSize[1] / 2))
         time.sleep(3)
