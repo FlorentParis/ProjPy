@@ -53,26 +53,26 @@ class Game:
 
     def loadPhrase(self, screen, screenSize):
         Cartes.aleaPhrase()
-        pygame.draw.rect(screen,(0,0,0),(screenSize[0] / 2 - 120,screenSize[1] / 2 -160,240,320))
+        pygame.draw.rect(screen,(0,0,0),(screenSize[0] / 2 - 120, screenSize[1] / 2 -160,240,320), 0, 15)
         screen.blit(self.loadText(24, self.phrase[0]), (screenSize[0] / 2 - 160, screenSize[1] / 2))
 
     def loadMots(self, screen, screenSize, deck):
         Cartes.aleaMots()
         if self.selectionGagnant:
-            pygame.draw.rect(screen, (255, 255, 255), (screenSize[0] / 2 - 390, screenSize[1] / 2 + 240, 240, 320))
-            pygame.draw.rect(screen, (255, 255, 255), (screenSize[0] / 2 - 120, screenSize[1] / 2 + 240, 240, 320))
-            pygame.draw.rect(screen, (255, 255, 255), (screenSize[0] / 2 + 150, screenSize[1] / 2 + 240, 240, 320))
+            pygame.draw.rect(screen, (255, 255, 255), (screenSize[0] / 2 - 390, screenSize[1] / 2 + 240, 240, 320), 0, 10)
+            pygame.draw.rect(screen, (255, 255, 255), (screenSize[0] / 2 - 120, screenSize[1] / 2 + 240, 240, 320), 0, 10)
+            pygame.draw.rect(screen, (255, 255, 255), (screenSize[0] / 2 + 150, screenSize[1] / 2 + 240, 240, 320), 0, 10)
             screen.blit(self.loadTextV2(24, self.choixPlayer1), (screenSize[0] / 2 - 390, screenSize[1] / 2 + 240))
             screen.blit(self.loadTextV2(24, "Egalité"), (screenSize[0] / 2 - 120, screenSize[1] / 2 + 240))
             screen.blit(self.loadTextV2(24, self.choixPlayer2), (screenSize[0] / 2 + 150, screenSize[1] / 2 + 240))
         else:
             i = 0
             dispoMots = [(screenSize[0] * 1 / 36, screenSize[1] - screenSize[1] /8), (screenSize[0] * 8 / 36, screenSize[1] - screenSize[1] /8), (screenSize[0] * 5 / 12, screenSize[1] - screenSize[1] /8), (screenSize[0] * 22 / 36, screenSize[1] - screenSize[1] /8), (screenSize[0] * 29 / 36, screenSize[1] - screenSize[1] /8)]
-            pygame.draw.rect(screen, (255,255,255), (screenSize[0] * 1 / 36, screenSize[1] - screenSize[1] /8, screenSize[0] /6, 320))
-            pygame.draw.rect(screen, (255,255,255), (screenSize[0] * 8 / 36, screenSize[1] - screenSize[1] /8, screenSize[0] /6, 320))
-            pygame.draw.rect(screen, (255,255,255), (screenSize[0] * 5 / 12, screenSize[1] - screenSize[1] /8, screenSize[0] /6, 320))
-            pygame.draw.rect(screen, (255,255,255), (screenSize[0] * 22 / 36, screenSize[1] - screenSize[1] /8, screenSize[0] /6, 320))
-            pygame.draw.rect(screen, (255,255,255), (screenSize[0] * 29 / 36, screenSize[1] - screenSize[1] /8, screenSize[0] /6, 320))
+            pygame.draw.rect(screen, (255,255,255), (screenSize[0] * 1 / 36, screenSize[1] - screenSize[1] /8, screenSize[0] /6, 320), 0, 10)
+            pygame.draw.rect(screen, (255,255,255), (screenSize[0] * 8 / 36, screenSize[1] - screenSize[1] /8, screenSize[0] /6, 320), 0, 10)
+            pygame.draw.rect(screen, (255,255,255), (screenSize[0] * 5 / 12, screenSize[1] - screenSize[1] /8, screenSize[0] /6, 320), 0, 10)
+            pygame.draw.rect(screen, (255,255,255), (screenSize[0] * 22 / 36, screenSize[1] - screenSize[1] /8, screenSize[0] /6, 320), 0, 10)
+            pygame.draw.rect(screen, (255,255,255), (screenSize[0] * 29 / 36, screenSize[1] - screenSize[1] /8, screenSize[0] /6, 320), 0, 10)
             for mots in deck:
                 screen.blit(self.loadTextV2(24, mots), dispoMots[i])
                 i += 1
