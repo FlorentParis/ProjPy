@@ -10,6 +10,8 @@ class Game:
     CLAIR = pygame.Color(140, 156, 93)
 
     def __init__(self):
+        self.transActive = False
+        self.timer = 0
         self.tourPlayer1 = True #Si True = tour du player1, sinon tour du player 2
         self.selectionGagnant = False #Si False n'affiche pas les résultat et désactive les Event
         self.viewLifeP1 = 360
@@ -78,11 +80,9 @@ class Game:
     def show(self, screen, screenSize):
         ps = list(self.players)
         self.loadHealth(screen, screenSize)
-        print("choix" + self.choixPlayer1, self.choixPlayer2)
-        print(self.deckPlayer1, self.deckPlayer2)
         if self.manche == 1:
             screen.blit(self.loadText(64, f"Manche {self.manche}"), (screenSize[0] / 2, screenSize[1] / 2))
-            #Affichae des noms + image du joueur
+            #Affichage des noms + image du joueur
             screen.blit(self.loadText(24, ps[self.player1].name), (screenSize[0] / 12, screenSize[1] / 12))
             screen.blit(self.loadText(72, 'VS'), (screenSize[0] / 2 - 36, screenSize[1] / 24))
             screen.blit(self.loadText(24, ps[self.player2].name), (screenSize[0] - screenSize[0] / 6, screenSize[1] / 12))
@@ -90,12 +90,13 @@ class Game:
             screen.blit(ps[self.player2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
             screen.blit(self.loadText(64, 'Commencer'), (screenSize[0] / 2 - 100, 530))
         else:
-            if ps[self.player1].health > 0 and ps[self.player2].health > 0 and self.selectionGagnant == False:
+            if self.transActive:
+                self.transition("Test", screen, screenSize)
+
+            elif ps[self.player1].health > 0 and ps[self.player2].health > 0 and self.selectionGagnant == False:
                 # Affiche une phrase aléatoire
                 self.loadPhrase(screen, screenSize)
-                print(self.deckPlayer2)
-                # Tour joueur 1
-                if (self.tourPlayer1):
+                if (self.tourPlayer1): #Tour joueur 1
                     self.loadMots(screen, screenSize, self.deckPlayer1)
                     screen.blit(self.loadText(24, ps[self.player1].name), (screenSize[0] / 12, screenSize[1] / 12))
                     screen.blit(ps[self.player1].image, ((screenSize[0] * 3 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 6))
@@ -125,6 +126,7 @@ class Game:
         from Menu import Menu
         if self.manche == 1:
             if Menu.isOnBtn(mouseX, mouseY, [400, 64], screenSize[0]/2 - 100, 530):
+              self.setTimer()
               self.setNextManche(None)
         #Interaction Cartes deck Player1
         elif not self.selectionGagnant:
@@ -132,18 +134,23 @@ class Game:
                 if Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 1 / 36, screenSize[1] - screenSize[1] /8):
                     self.choixPlayer1 = self.deckPlayer1[0]
                     self.tourPlayer1 = False
+                    self.setTimer()
                 elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 8 / 36, screenSize[1] - screenSize[1] /8):
                     self.choixPlayer1 = self.deckPlayer1[1]
                     self.tourPlayer1 = False
+                    self.setTimer()
                 elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 5 / 12, screenSize[1] - screenSize[1] /8):
                     self.choixPlayer1 = self.deckPlayer1[2]
                     self.tourPlayer1 = False
+                    self.setTimer()
                 elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 22 / 36, screenSize[1] - screenSize[1] /8):
                     self.choixPlayer1 = self.deckPlayer1[3]
                     self.tourPlayer1 = False
+                    self.setTimer()
                 elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 29 / 36, screenSize[1] - screenSize[1] /8):
                     self.choixPlayer1 = self.deckPlayer1[4]
                     self.tourPlayer1 = False
+                    self.setTimer()
             else: #Interaction Cartes deck Player2
                 if Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 1 / 36, screenSize[1] - screenSize[1] /8):
                     self.choixPlayer2 = self.deckPlayer2[0]
@@ -193,7 +200,14 @@ class Game:
                 self.viewLifeP2 -= 120
         self.manche += 1
 
-    #def transition(self, text):
-    #    pygame.draw.rect(screen, (0,0,0), (screenSize[0] / 2 - 500, screenSize[1] / 2 - 100, 1000, 200))
-    #    screen.blit(self.loadText(24, text), (screenSize[0] / 12, screenSize[1] / 12))
-    #    time.sleep(3)
+
+    def transition(self, text, screen, screenSize):
+        print("test1")
+        screen.blit(self.loadText(24, text), (screenSize[0] / 12, screenSize[1] / 12))
+        pygame.draw.rect(screen, (0,0,0), (screenSize[0] / 2 - 500, screenSize[1] / 2 - 100, 1000, 200))
+        if pygame.time.get_ticks() - self.timer > 3000:
+            self.transActive = False
+
+    def setTimer(self):
+        self.transActive = True
+        self.timer = pygame.time.get_ticks()
