@@ -183,7 +183,7 @@ class Menu:
           self.playerIndex2 = 0
       # EN JEU
       elif self.state == Menu.INGAME:
-        state = game.onEvent(screenSize, mouseX, mouseY, self.state)
+        state = game.onEvent(screenSize, mouseX, mouseY)
         if state == Menu.INTRO:
           self.state = Menu.INTRO
       # MENU REGLE

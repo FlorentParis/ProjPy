@@ -3,8 +3,8 @@ import random
 listeMots = ("Ta face de citron", "Une huitre périmée", "Ton père au ski"
              , "Faire un bisou à des toilettes", "Manger des doigts de pied"
              , "Pikachu bodybuilder en slip", "Les mauvais repas de ta maman"
-             , "Le faire passer pour cassimir", "Thomas le train"
-             , "dire chocolatine", "Des pates au sucre", "des t-shirt banane"
+             , "Te faire passer pour cassimir", "Thomas le train"
+             , "dire chocolatine", "Des pates au sucre", "des t-shirts banane"
              , "la téléréalité", "Fortnite", "Sortir avec un Kikou")
 
 listePhrases = ("Te voir c'est aussi décevant que ..."

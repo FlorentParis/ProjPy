@@ -96,7 +96,7 @@ class Game:
                 elif self.selectionGagnant:
                     self.transition("Tour du Juge", screen, screenSize)
                 else:
-                    self.transition("Tour joueur 2", screen, screenSize)
+                    self.transition(f"Manche {self.manche} : Tour joueur 2", screen, screenSize)
             elif ps[self.player1].health > 0 and ps[self.player2].health > 0 and self.selectionGagnant == False:
                 # Affiche une phrase aléatoire
                 self.loadPhrase(screen, screenSize)
@@ -127,7 +127,7 @@ class Game:
             else:
                 screen.blit(self.loadText(64, "Erreur! relancer le jeu"), (screenSize[0] * 5 / 12, screenSize[1] * 1 / 6))
 
-    def onEvent(self, screenSize, mouseX, mouseY, state):
+    def onEvent(self, screenSize, mouseX, mouseY):
         from Menu import Menu
         ps = list(self.players)
         if ps[self.player1].health > 0 and ps[self.player2].health > 0:
@@ -195,6 +195,7 @@ class Game:
                         self.setTimer()
         else: #Interaction fin de game
             if Menu.isOnBtn(mouseX, mouseY, [200, 64], screenSize[0]/2 - 100, 530):
+                """ self.reset() """
                 state = Menu.INTRO
                 return state
 
@@ -228,3 +229,8 @@ class Game:
     def setTimer(self):
         self.transActive = True
         self.timer = pygame.time.get_ticks()
+
+    def reset(self):
+        self.viewLifeP1 = 360
+        self.viewLifeP2 = 360
+        self.manche = 0
