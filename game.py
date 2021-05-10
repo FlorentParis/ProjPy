@@ -22,7 +22,7 @@ class Game:
         self.phrase = Cartes.Phrase
         self.deckPlayer1 = Cartes.deckPlayer1
         self.deckPlayer2 = Cartes.deckPlayer2
-        self.manche = 1
+        self.manche = 0
         self.choixPlayer1 = ""
         self.choixPlayer2 = ""
 
@@ -80,7 +80,7 @@ class Game:
     def show(self, screen, screenSize):
         ps = list(self.players)
         self.loadHealth(screen, screenSize)
-        if self.manche == 1:
+        if self.manche == 0:
             screen.blit(self.loadText(64, f"Manche {self.manche}"), (screenSize[0] / 2, screenSize[1] / 2))
             #Affichage des noms + image du joueur
             screen.blit(self.loadText(24, ps[self.player1].name), (screenSize[0] / 12, screenSize[1] / 12))
@@ -90,9 +90,13 @@ class Game:
             screen.blit(ps[self.player2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
             screen.blit(self.loadText(64, 'Commencer'), (screenSize[0] / 2 - 100, 530))
         else:
-            if self.transActive:
-                self.transition("Test", screen, screenSize)
-
+            if self.transActive and  not (ps[self.player1].health == 0 or ps[self.player2].health == 0) :
+                if self.tourPlayer1:
+                    self.transition(f"Manche {self.manche} : Tour Joueur 1", screen, screenSize)
+                elif self.selectionGagnant:
+                    self.transition("Tour du Juge", screen, screenSize)
+                else:
+                    self.transition("Tour joueur 2", screen, screenSize)
             elif ps[self.player1].health > 0 and ps[self.player2].health > 0 and self.selectionGagnant == False:
                 # Affiche une phrase aléatoire
                 self.loadPhrase(screen, screenSize)
@@ -119,69 +123,83 @@ class Game:
                     screen.blit(ps[self.player2].image, ((screenSize[0] * 6 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 6))
                 else:
                     screen.blit(ps[self.player1].image, ((screenSize[0] * 6 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 5))
+                screen.blit(self.loadText(64, 'Retour au Menu'), (screenSize[0] / 2 - 100, 530))
             else:
                 screen.blit(self.loadText(64, "Erreur! relancer le jeu"), (screenSize[0] * 5 / 12, screenSize[1] * 1 / 6))
 
-    def onEvent(self, screenSize, mouseX, mouseY):
+    def onEvent(self, screenSize, mouseX, mouseY, state):
         from Menu import Menu
-        if self.manche == 1:
-            if Menu.isOnBtn(mouseX, mouseY, [400, 64], screenSize[0]/2 - 100, 530):
-              self.setTimer()
-              self.setNextManche(None)
-        #Interaction Cartes deck Player1
-        elif not self.selectionGagnant:
-            if (self.tourPlayer1):
-                if Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 1 / 36, screenSize[1] - screenSize[1] /8):
-                    self.choixPlayer1 = self.deckPlayer1[0]
-                    self.tourPlayer1 = False
-                    self.setTimer()
-                elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 8 / 36, screenSize[1] - screenSize[1] /8):
-                    self.choixPlayer1 = self.deckPlayer1[1]
-                    self.tourPlayer1 = False
-                    self.setTimer()
-                elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 5 / 12, screenSize[1] - screenSize[1] /8):
-                    self.choixPlayer1 = self.deckPlayer1[2]
-                    self.tourPlayer1 = False
-                    self.setTimer()
-                elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 22 / 36, screenSize[1] - screenSize[1] /8):
-                    self.choixPlayer1 = self.deckPlayer1[3]
-                    self.tourPlayer1 = False
-                    self.setTimer()
-                elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 29 / 36, screenSize[1] - screenSize[1] /8):
-                    self.choixPlayer1 = self.deckPlayer1[4]
-                    self.tourPlayer1 = False
-                    self.setTimer()
-            else: #Interaction Cartes deck Player2
-                if Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 1 / 36, screenSize[1] - screenSize[1] /8):
-                    self.choixPlayer2 = self.deckPlayer2[0]
-                    self.selectionGagnant = True
-                elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 8 / 36, screenSize[1] - screenSize[1] /8):
-                    self.choixPlayer2 = self.deckPlayer2[1]
-                    self.selectionGagnant = True
-                elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 5 / 12, screenSize[1] - screenSize[1] /8):
-                    self.choixPlayer2 = self.deckPlayer2[2]
-                    self.selectionGagnant = True
-                elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 22 / 36, screenSize[1] - screenSize[1] /8):
-                    self.choixPlayer2 = self.deckPlayer2[3]
-                    self.selectionGagnant = True
-                elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 29 / 36, screenSize[1] - screenSize[1] /8):
-                    self.choixPlayer2 = self.deckPlayer2[4]
-                    self.selectionGagnant = True
-        elif self.selectionGagnant: #Interaction Selection du gagnant
-            if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 390, screenSize[1] / 2 + 240):
-                self.choixPlayer2 = self.deckPlayer2[1]
-                self.setNextManche(self.player2)
-            elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 120, screenSize[1] / 2 + 240):
-                self.choixPlayer2 = self.deckPlayer2[2]
-                self.setNextManche(None)
-            elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 150, screenSize[1] / 2 + 240):
-                self.choixPlayer2 = self.deckPlayer2[3]
-                self.setNextManche(self.player1)
+        ps = list(self.players)
+        if ps[self.player1].health > 0 and ps[self.player2].health > 0:
+            if self.manche == 0:
+                if Menu.isOnBtn(mouseX, mouseY, [400, 64], screenSize[0]/2 - 100, 530):
+                  self.setTimer()
+                  self.setNextManche(None)
+            #Interaction Cartes deck Player1
+            elif self.transActive == False:
+                if not self.selectionGagnant:
+                    if (self.tourPlayer1):
+                        if Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 1 / 36, screenSize[1] - screenSize[1] /8):
+                            self.choixPlayer1 = self.deckPlayer1[0]
+                            self.tourPlayer1 = False
+                            self.setTimer()
+                        elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 8 / 36, screenSize[1] - screenSize[1] /8):
+                            self.choixPlayer1 = self.deckPlayer1[1]
+                            self.tourPlayer1 = False
+                            self.setTimer()
+                        elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 5 / 12, screenSize[1] - screenSize[1] /8):
+                            self.choixPlayer1 = self.deckPlayer1[2]
+                            self.tourPlayer1 = False
+                            self.setTimer()
+                        elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 22 / 36, screenSize[1] - screenSize[1] /8):
+                            self.choixPlayer1 = self.deckPlayer1[3]
+                            self.tourPlayer1 = False
+                            self.setTimer()
+                        elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 29 / 36, screenSize[1] - screenSize[1] /8):
+                            self.choixPlayer1 = self.deckPlayer1[4]
+                            self.tourPlayer1 = False
+                            self.setTimer()
+                    else: #Interaction Cartes deck Player2
+                        if Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 1 / 36, screenSize[1] - screenSize[1] /8):
+                            self.choixPlayer2 = self.deckPlayer2[0]
+                            self.selectionGagnant = True
+                            self.setTimer()
+                        elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 8 / 36, screenSize[1] - screenSize[1] /8):
+                            self.choixPlayer2 = self.deckPlayer2[1]
+                            self.selectionGagnant = True
+                            self.setTimer()
+                        elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 5 / 12, screenSize[1] - screenSize[1] /8):
+                            self.choixPlayer2 = self.deckPlayer2[2]
+                            self.selectionGagnant = True
+                            self.setTimer()
+                        elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 22 / 36, screenSize[1] - screenSize[1] /8):
+                            self.choixPlayer2 = self.deckPlayer2[3]
+                            self.selectionGagnant = True
+                            self.setTimer()
+                        elif Menu.isOnBtn(mouseX, mouseY, [screenSize[0] /6, 320], screenSize[0] * 29 / 36, screenSize[1] - screenSize[1] /8):
+                            self.choixPlayer2 = self.deckPlayer2[4]
+                            self.selectionGagnant = True
+                            self.setTimer()
+                elif self.selectionGagnant: #Interaction Selection du gagnant
+                    if Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 390, screenSize[1] / 2 + 240):
+                        self.choixPlayer2 = self.deckPlayer2[1]
+                        self.setNextManche(self.player2)
+                        self.setTimer()
+                    elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 - 120, screenSize[1] / 2 + 240):
+                        self.choixPlayer2 = self.deckPlayer2[2]
+                        self.setNextManche(None)
+                        self.setTimer()
+                    elif Menu.isOnBtn(mouseX, mouseY, [240, 320], screenSize[0] / 2 + 150, screenSize[1] / 2 + 240):
+                        self.choixPlayer2 = self.deckPlayer2[3]
+                        self.setNextManche(self.player1)
+                        self.setTimer()
         else: #Interaction fin de game
-            pass
+            if Menu.isOnBtn(mouseX, mouseY, [200, 64], screenSize[0]/2 - 100, 530):
+                state = Menu.INTRO
+                return state
 
     def setNextManche(self, playerPerdant):
-        if self.manche > 1:
+        if self.manche >= 1:
             ps = list(self.players)
             self.selectionGagnant = False
             self.tourPlayer1 = True
@@ -202,10 +220,9 @@ class Game:
 
 
     def transition(self, text, screen, screenSize):
-        print("test1")
-        screen.blit(self.loadText(24, text), (screenSize[0] / 12, screenSize[1] / 12))
-        pygame.draw.rect(screen, (0,0,0), (screenSize[0] / 2 - 500, screenSize[1] / 2 - 100, 1000, 200))
-        if pygame.time.get_ticks() - self.timer > 3000:
+        pygame.draw.rect(screen, (0, 0, 0), (screenSize[0] / 2 - 500, screenSize[1] / 2 - 100, 1000, 200))
+        screen.blit(self.loadText(48, text), (screenSize[0] / 2 - 160, screenSize[1] / 2))
+        if pygame.time.get_ticks() - self.timer > 1000:
             self.transActive = False
 
     def setTimer(self):
