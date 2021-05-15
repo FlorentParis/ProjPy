@@ -90,7 +90,7 @@ class Game:
             screen.blit(ps[self.player2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)-personnage.SIZE[1]/5))
             screen.blit(self.loadText(64, 'Commencer'), (screenSize[0] / 2 - 100, 530))
         else:
-            if self.transActive and  not (ps[self.player1].health == 0 or ps[self.player2].health == 0) :
+            if self.transActive and not (ps[self.player1].health == 0 or ps[self.player2].health == 0):
                 if self.tourPlayer1:
                     self.transition(f"Manche {self.manche} : Tour Joueur 1", screen, screenSize)
                 elif self.selectionGagnant:
@@ -101,21 +101,21 @@ class Game:
                 # Affiche une phrase aléatoire
                 self.loadPhrase(screen, screenSize)
                 if (self.tourPlayer1): #Tour joueur 1
-                    self.loadMots(screen, screenSize, self.deckPlayer1)
                     screen.blit(self.loadText(24, ps[self.player1].name), (screenSize[0] / 12, screenSize[1] / 12))
                     screen.blit(ps[self.player1].image, ((screenSize[0] * 3 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 6))
+                    self.loadMots(screen, screenSize, self.deckPlayer1)
                 else: #Tour joueur 2
-                    self.loadMots(screen, screenSize, self.deckPlayer2)
                     screen.blit(self.loadText(24, ps[self.player2].name),(screenSize[0] - screenSize[0] / 6, screenSize[1] / 12))
                     screen.blit(ps[self.player2].image, ((screenSize[0]*9/12)-personnage.SIZE[0]/3, (screenSize[1]/2)- personnage.SIZE[1]/5))
+                    self.loadMots(screen, screenSize, self.deckPlayer2)
             elif self.selectionGagnant:
                 self.loadPhrase(screen, screenSize)
-                self.loadMots(screen, screenSize, self.deckPlayer2)
                 screen.blit(self.loadText(24, ps[self.player1].name), (screenSize[0] / 12, screenSize[1] / 12))
                 screen.blit(self.loadText(72, 'VS'), (screenSize[0] / 2 - 36, screenSize[1] / 24))
                 screen.blit(self.loadText(24, ps[self.player2].name),(screenSize[0] - screenSize[0] / 6, screenSize[1] / 12))
                 screen.blit(ps[self.player1].image, ((screenSize[0] * 3 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 6))
                 screen.blit(ps[self.player2].image, ((screenSize[0] * 9 / 12) - personnage.SIZE[0] / 3, (screenSize[1] / 2) - personnage.SIZE[1] / 5))
+                self.loadMots(screen, screenSize, self.deckPlayer2)
                 #TODO Afficher les deux réponse en dessous des personnages + un carré entre les deux pour "égalité"
             elif ps[self.player1].health == 0 or ps[self.player2].health == 0:
                 screen.blit(self.loadText(64, "Victoire"), (screenSize[0] * 5 / 12, screenSize[1] * 1/6))
@@ -195,7 +195,7 @@ class Game:
                         self.setTimer()
         else: #Interaction fin de game
             if Menu.isOnBtn(mouseX, mouseY, [200, 64], screenSize[0]/2 - 100, 530):
-                """ self.reset() """
+                self.reset()
                 state = Menu.INTRO
                 return state
 
@@ -231,6 +231,11 @@ class Game:
         self.timer = pygame.time.get_ticks()
 
     def reset(self):
+        ps = list(self.players)
+        ps[self.player1].health = 30
+        ps[self.player2].health = 30
+        self.player1 = None
+        self.player2 = None
         self.viewLifeP1 = 360
         self.viewLifeP2 = 360
         self.manche = 0
